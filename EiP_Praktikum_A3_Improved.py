@@ -11,6 +11,7 @@ files = os.listdir(dir_ressource)
 for file in files:
     globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
 
+#flappy status quo
 flappy = flappyd
 
 #Bildschirmgröße und Spielpixel festlegen
@@ -23,7 +24,7 @@ gheight = 10
 #pygame Engine starten und Hintergrund weiß machen
 pygame.init()
 screen = pygame.display.set_mode((width,height), pygame.RESIZABLE)
-pygame.display.set_caption("Flappy Bird")
+pygame.display.set_caption("FlappyPuff")
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 50)
 game_active = True
@@ -35,13 +36,13 @@ wall = pygame.Surface((width/gwidth, height))
 wall.fill("Black")
 hole = pygame.Surface((width/gwidth, (height/gheight)*3))
 hole.fill("White")
-Game_Over = font.render("Oh, You Died!", True, "Red")
+Game_Over = gameover#font.render("Oh, You Died!", True, "Red")
 Game_Over2 = font.render("Press Enter to Restart", True, "Red")
 score = 0
 
 
 #Hauptfunktion, die die Positionen unserer Elemente angibt
-def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int, player_pos: int, points: int, flappy):
+def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int, player_pos: int, points: int, flappy: any):
     global game_active
     screen.blit(bg, (0, 0))
     screen.blit(pipe, (wall1_pos - (width/gwidth)/2, 0))
@@ -96,6 +97,7 @@ while True:
             flappym = pygame.transform.scale(flappym, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             flappyd = pygame.transform.scale(flappyd, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             flappyu = pygame.transform.scale(flappyu, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
+            pipe = pygame.transform.scale(pipe, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             pygame.display.update()
         elif game_active:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
