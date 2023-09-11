@@ -50,8 +50,18 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
     screen.blit(hole, (wall1_pos - (width/gwidth)/2, hole1_pos))
     screen.blit(hole, (wall2_pos - (width/gwidth)/2, hole2_pos))
     screen.blit(flappy, (10, player_pos - (height/gheight)/2))
-    score_board = font.render(f"Score: {points}", True, "Green")
-    screen.blit(score_board,(630, 25))
+    if score > 9:
+        x = points//10
+        i = points//1
+        score_board = font.render("Score:", True, "Green")
+        screen.blit(score_board,(630, 25))
+        screen.blit(globals()[f'num{x}'],(750, 25))
+        screen.blit(globals()[f'num{i}'],(780, 25))
+    else:
+        i = points//1
+        score_board = font.render("Score:", True, "Green")
+        screen.blit(score_board,(630, 25))
+        screen.blit(globals()[f'num{i}'],(750, 25))
     if (wall1_pos - (width/gwidth)/2) <= (width/gwidth):
         if player_pos < (hole1_pos + (height/gheight)/2) or player_pos > (hole1_pos + 3*(height/gheight) - ((height/gheight)/2)):
             game_active = False
