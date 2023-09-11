@@ -8,8 +8,11 @@ from sys import exit
 #create vars for the contents of /ressources
 dir_ressource = './ressources/'
 files = os.listdir(dir_ressource)
+sprites = list()
 for file in files:
-    globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
+    globals()[file.removesuffix('.png')] = pygame.image.load(dir_ressource+file)
+    sprites.append(file.removesuffix('.png'))
+    
 
 #flappy status quo
 flappy = flappyd
@@ -103,11 +106,20 @@ while True:
             pygame.quit()
             exit()
         elif  event.type == pygame.VIDEORESIZE:
+            for var in sprites:
+                if var == "bg":
+                    globals()[var] = pygame.transform.scale(globals()[var], (screen.get_width(), screen.get_height()))
+                    pygame.display.update()
+                else:    
+                    globals()[var] = pygame.transform.scale(globals()[var], (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
+                    pygame.display.update()
+            '''        
             bg = pygame.transform.scale(bg, (screen.get_width(), screen.get_height()))
             flappym = pygame.transform.scale(flappym, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             flappyd = pygame.transform.scale(flappyd, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             flappyu = pygame.transform.scale(flappyu, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             pipe = pygame.transform.scale(pipe, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
+            '''
             pygame.display.update()
         elif game_active:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
