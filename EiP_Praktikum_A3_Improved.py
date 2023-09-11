@@ -1,15 +1,16 @@
 #EiP Praktikum A4, Flappy Bird working
 
 import pygame
-from sys import exit
 import random
+import os
+from sys import exit
 
-#zeug was der christian macht
-bg = pygame.image.load('./ressources/background1.png')
-flappym = pygame.image.load('./ressources/bluebird-midflap.png')
-flappyu = pygame.image.load('./ressources/bluebird-upflap.png')
-flappyd = pygame.image.load('./ressources/bluebird-downflap.png')
-pipe = pygame.image.load('./ressources/pipe-green.png')
+#create vars for the contents of /ressources
+dir_ressource = './ressources/'
+files = os.listdir(dir_ressource)
+for file in files:
+    globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
+
 flappy = flappyd
 
 #Bildschirmgröße und Spielpixel festlegen
