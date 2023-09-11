@@ -1,8 +1,16 @@
-#EiP Praktikum A3 Improved
+#EiP Praktikum A4, Flappy Bird working
 
 import pygame
 from sys import exit
 import random
+
+#zeug was der christian macht
+bg = pygame.image.load('./ressources/background1.png')
+flappym = pygame.image.load('./ressources/bluebird-midflap.png')
+flappyu = pygame.image.load('./ressources/bluebird-upflap.png')
+flappyd = pygame.image.load('./ressources/bluebird-downflap.png')
+pipe = pygame.image.load('./ressources/pipe-green.png')
+flappy = flappyd
 
 #Bildschirmgröße und Spielpixel festlegen
 width = 800
@@ -13,9 +21,11 @@ gheight = 10
 
 #pygame Engine starten und Hintergrund weiß machen
 pygame.init()
-screen = pygame.display.set_mode((width,height))
-pygame.display.set_caption("Aufgabe 2")
+screen = pygame.display.set_mode((width,height), pygame.RESIZABLE)
+pygame.display.set_caption("Flappy Bird")
 clock = pygame.time.Clock()
+font = pygame.font.Font(None, 50)
+game_active = True
 
 #3 Surface Typen für den Spieler, die Wände und die Löcher in den Wänden
 player = pygame.Surface((width/gwidth,height/gheight))
@@ -24,14 +34,28 @@ wall = pygame.Surface((width/gwidth, height))
 wall.fill("Black")
 hole = pygame.Surface((width/gwidth, (height/gheight)*3))
 hole.fill("White")
+Game_Over = font.render("Oh, You Died!", True, "Red")
+Game_Over2 = font.render("Press Enter to Restart", True, "Red")
+score = 0
+
 
 #Hauptfunktion, die die Positionen unserer Elemente angibt
-def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int, player_pos: int):
-    screen.blit(wall, (wall1_pos - (width/gwidth)/2, 0))
+def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int, player_pos: int, points: int, flappy):
+    global game_active
+    screen.blit(bg, (0, 0))
+    screen.blit(pipe, (wall1_pos - (width/gwidth)/2, 0))
     screen.blit(wall, (wall2_pos - (width/gwidth)/2, 0))
     screen.blit(hole, (wall1_pos - (width/gwidth)/2, hole1_pos))
     screen.blit(hole, (wall2_pos - (width/gwidth)/2, hole2_pos))
-    screen.blit(player, (0, player_pos - (height/gheight)/2))
+    screen.blit(flappy, (10, player_pos - (height/gheight)/2))
+    score_board = font.render(f"Score: {points}", True, "Green")
+    screen.blit(score_board,(630, 25))
+    if (wall1_pos - (width/gwidth)/2) <= (width/gwidth):
+        if player_pos < (hole1_pos + (height/gheight)/2) or player_pos > (hole1_pos + 3*(height/gheight) - ((height/gheight)/2)):
+            game_active = False
+    if (wall2_pos - (width/gwidth)/2) <= (width/gwidth):
+        if player_pos < (hole2_pos + (height/gheight)/2) or player_pos > (hole2_pos + 3*(height/gheight) - ((height/gheight)/2)):
+            game_active = False
     return
 
 #Funktion die Mittelpunkt in Bildschirmkoordinaten berechnet
@@ -66,31 +90,65 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                player_speed = 0
-                player_speed -= (height/gheight)/4
+        elif  event.type == pygame.VIDEORESIZE:
+            bg = pygame.transform.scale(bg, (screen.get_width(), screen.get_height()))
+            flappym = pygame.transform.scale(flappym, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
+            flappyd = pygame.transform.scale(flappyd, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
+            flappyu = pygame.transform.scale(flappyu, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
+            pygame.display.update()
+        elif game_active:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    player_speed = 0
+                    player_speed -= (height/gheight)/5
+        else:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                wall1 = center(19)
+                wall2 = center(29)
+                score = 0
+                player_center = center(9)
+                flappy = flappym
+                game_active = True
+        
     
-    wall1 -= wall_speed
-    wall2 -= wall_speed
-    if wall1 <= -(width/gwidth):
-        wall1 = center(20)
-        hole1 = center(random.randint(0,7))
-    if wall2 <= -(width/gwidth):
-        wall2 = center(20)
-        hole2 = center(random.randint(0,7))
+    #Game-Screen
+    if game_active:
+        wall1 -= wall_speed
+        wall2 -= wall_speed
+        if wall1 <= -(width/gwidth):
+            wall1 = center(20)
+            hole1 = center(random.randint(0,7))
+            score += 1
+        if wall2 <= -(width/gwidth):
+            wall2 = center(20)
+            hole2 = center(random.randint(0,7))
+            score += 1
 
-    #Spielerposition verändert sich um Geschwindigkeit und die Geschwindigkeit wird geupdated
-    player_center += calc_speed(player_speed, gravity)
-    player_speed = calc_speed(player_speed, gravity)
-    
-    #Damit Spieler nicht außerhalb des Spielfeldes gelangen kann
-    if player_center < center(0):
-        player_center = center(0)
-    if player_center > center(9):
-        player_center = center(9)
-    clock.tick(60)
-    display_state(wall1, wall2, hole1, hole2, player_center)
+        #Spielerposition verändert sich um Geschwindigkeit und die Geschwindigkeit wird geupdated
+        player_center += calc_speed(player_speed, gravity)
+        player_speed = calc_speed(player_speed, gravity)
+
+        #Damit Spieler nicht außerhalb des Spielfeldes gelangen kann
+        if player_center < center(0):
+            player_center = center(0)
+        elif player_center > center(9):
+            player_center = center(9)
+        elif player_speed < 0:
+            flappy = flappyd
+        elif player_speed > 0:
+            flappy = flappyu
+        clock.tick(60)
+
+        #Bildschirm wird geupdated
+        display_state(wall1, wall2, hole1, hole2, player_center, score, flappy)
+
+    #Game-over-Screen
+    else:
+        screen.fill("Blue")
+        screen.blit(Game_Over,(275,50))
+        screen.blit(Game_Over2,(200, 200))
+        score_board = font.render(f"Score: {score}", True, "Green")
+        screen.blit(score_board,(630, 25))
+   
     pygame.display.update()
     #Resettet den Bildschirm nach jedem Frame
     screen.fill("White")
