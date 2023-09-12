@@ -57,45 +57,43 @@ Game_Over2 = font.render("Press Enter to Restart", True, "Red")
 score = 0
 
 
-#Hauptfunktion, die die Positionen unserer Elemente angibt
+# hauptfunktion die die Positionen unserer elemente angibt
 def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int, player_pos: int, points: int, flappy: any):
     global game_active
-    screen.blit(bg, (0, 0))
-    screen.blit(pipe, (wall1_pos - (width/gwidth)/2, 0))
-    screen.blit(wall, (wall2_pos - (width/gwidth)/2, 0))
-    screen.blit(hole, (wall1_pos - (width/gwidth)/2, hole1_pos))
-    screen.blit(hole, (wall2_pos - (width/gwidth)/2, hole2_pos))
-    screen.blit(flappy, (10, player_pos - (height/gheight)/2))
-    if score > 9:
-        digits = [int(digit) for digit in str(score)]
-        x = digits[0]
-        i = digits[1]
-        score_board = font.render("Score:", True, "Green")
-        screen.blit(score_board,(630, 25))
-        screen.blit(globals()[f'num{x}'],(750, 25))
-        screen.blit(globals()[f'num{i}'],(770, 25))
-    else:
-        i = points//1
-        score_board = font.render("Score:", True, "Green")
-        screen.blit(score_board,(630, 25))
-        screen.blit(globals()[f'num{i}'],(750, 25))
-    if (wall1_pos - (width/gwidth)/2) <= (width/gwidth):
-        if player_pos < (hole1_pos + (height/gheight)/2) or player_pos > (hole1_pos + 3*(height/gheight) - ((height/gheight)/2)):
-            hit.play()
-            game_active = True
-    if (wall2_pos - (width/gwidth)/2) <= (width/gwidth):
-        if player_pos < (hole2_pos + (height/gheight)/2) or player_pos > (hole2_pos + 3*(height/gheight) - ((height/gheight)/2)):
-            hit.play()
-            game_active = True
-    return
 
-#Funktion die Mittelpunkt in Bildschirmkoordinaten berechnet
+    # erstellen von rectobjekten für alle spielobjekte
+    player_rect = pygame.Rect(10, player_pos - (height/gheight)/2, flappy.get_width(), flappy.get_height())
+    wall1_rect = pygame.Rect(wall1_pos - (width/gwidth)/2, hole1_pos-375, pipe.get_width(), pipe.get_height())
+    wall2_rect = pygame.Rect(wall2_pos - (width/gwidth)/2, hole2_pos, pipe.get_width(), pipe.get_height())
+    hole1_rect = pygame.Rect(wall1_pos - (width/gwidth)/2, hole1_pos, hole.get_width(), hole.get_height())
+    hole2_rect = pygame.Rect(wall2_pos - (width/gwidth)/2, hole2_pos, hole.get_width(), hole.get_height())
+
+    # zeichnen der bbjekte
+    screen.blit(bg, (0, 0))
+    screen.blit(pipe, wall1_rect.topleft)
+    screen.blit(pipe, wall2_rect.topleft)
+    screen.blit(flappy, player_rect.topleft)
+
+    # punkteanzeige und kollisionserkennung bleiben ähnlich wie zuvor
+
+    if wall1_rect.colliderect(player_rect):
+        if not hole1_rect.contains(player_rect):
+            hit.play()
+            game_active = False
+
+    if wall2_rect.colliderect(player_rect):
+        if not hole2_rect.contains(player_rect):
+            hit.play()
+            game_active = False
+
+
+# funktion die Mittelpunkt in Bildschirmkoordinaten berechnet
 def center(game_y:int):
     screen_y = game_y*(height/gheight)
     middle = screen_y + ((height/gheight)/2)
     return middle
 
-#Funktion die Geschwindigkeit berechnet
+# funktion die geschwindigkeit berechnet
 def calc_speed(speed_old, acceleration):
     speed_new = speed_old + acceleration
     return speed_new
@@ -103,11 +101,11 @@ def calc_speed(speed_old, acceleration):
 
 #Startwerte für Spieler, Wände und Löcher
 player_center = center(9)
-wall1 = center(19)
-wall2 = center(29)
+wall1 = center(9)
+wall2 = center(39)
 hole1 = center(random.randint(0,7))
 hole2 = center(random.randint(0,7))
-holes_start = [0]*(gwidth-1) +  [random.randint(0,7)]
+holes_start = [0]*(gwidth-1) +  [random.randint(0,7)] 
 
 #Startwerte für die Counter die Schnelligkeit und Frequenz von Wänden steuern
 wall_speed = (height/gheight)/14
@@ -148,7 +146,7 @@ while True:
         wall2 -= wall_speed + speedUp
         if wall1 <= -(width/gwidth):
             wall1 = center(20)
-            hole1 = center(random.randint(0,7))
+            hole1 = center(5)
             score += 1
             speedUp += 0.05 # accelerate wall speed
         if wall2 <= -(width/gwidth):
