@@ -10,18 +10,22 @@ pygame.mixer.init()
 
 #create vars for the contents of /ressources
 mp3_music = {}
+wav_effects = {}
 dir_ressource = './ressources/'
 files = os.listdir(dir_ressource)
 for file in files:
     if file.endswith(".png"):
         globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
-    else:
+    if file.endswith(".mp3"):
         mp3_music[file.removesuffix('.mp3')] = dir_ressource + file
+    if file.endswith(".wav"):
+        mp3_music[file.removesuffix('.wav')] = dir_ressource + file
 
 # play menu music in an endless loop
 pygame.mixer.music.load(mp3_music["menuMusic"])
 pygame.mixer.music.play(-1)
-
+# init sound effect
+hit = pygame.mixer.Sound(mp3_music["hit"])
 
 #flappy status quo
 flappy = flappyd
@@ -76,9 +80,11 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
         screen.blit(globals()[f'num{i}'],(750, 25))
     if (wall1_pos - (width/gwidth)/2) <= (width/gwidth):
         if player_pos < (hole1_pos + (height/gheight)/2) or player_pos > (hole1_pos + 3*(height/gheight) - ((height/gheight)/2)):
+            hit.play()
             game_active = False
     if (wall2_pos - (width/gwidth)/2) <= (width/gwidth):
         if player_pos < (hole2_pos + (height/gheight)/2) or player_pos > (hole2_pos + 3*(height/gheight) - ((height/gheight)/2)):
+            hit.play()
             game_active = False
     return
 
