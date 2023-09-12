@@ -113,7 +113,7 @@ holes_start = [0]*(gwidth-1) +  [random.randint(0,7)]
 wall_speed = (height/gheight)/14
 player_speed = 0
 gravity = (height/gheight)/70
-
+speedUp = 0
 #Game-Loop
 while True:
     #Möglichkeit das Spiel zu schließen und Leertaste mit "Springen" belegen
@@ -144,16 +144,18 @@ while True:
     
     #Game-Screen
     if game_active:
-        wall1 -= wall_speed
-        wall2 -= wall_speed
+        wall1 -= wall_speed + speedUp
+        wall2 -= wall_speed + speedUp
         if wall1 <= -(width/gwidth):
             wall1 = center(20)
             hole1 = center(random.randint(0,7))
             score += 1
+            speedUp += 0.05 # accelerate wall speed
         if wall2 <= -(width/gwidth):
             wall2 = center(20)
             hole2 = center(random.randint(0,7))
             score += 1
+            speedUp += 0.05 # accelerate wall speed
 
         #Spielerposition verändert sich um Geschwindigkeit und die Geschwindigkeit wird geupdated
         player_center += calc_speed(player_speed, gravity)
