@@ -5,11 +5,23 @@ import random
 import os
 from sys import exit
 
+# initiate mixer
+pygame.mixer.init()
+
 #create vars for the contents of /ressources
+mp3_music = {}
 dir_ressource = './ressources/'
 files = os.listdir(dir_ressource)
 for file in files:
-    globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
+    if file.endswith(".png"):
+        globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
+    else:
+        mp3_music[file.removesuffix('.mp3')] = dir_ressource + file
+
+# play menu music in an endless loop
+pygame.mixer.music.load(mp3_music["menuMusic"])
+pygame.mixer.music.play(-1)
+
 
 #flappy status quo
 flappy = flappyd
@@ -36,7 +48,7 @@ wall = pygame.Surface((width/gwidth, height))
 wall.fill("Black")
 hole = pygame.Surface((width/gwidth, (height/gheight)*3))
 hole.fill("White")
-Game_Over = gameover#font.render("Oh, You Died!", True, "Red")
+Game_Over = gameover #font.render("Oh, You Died!", True, "Red")
 Game_Over2 = font.render("Press Enter to Restart", True, "Red")
 score = 0
 
