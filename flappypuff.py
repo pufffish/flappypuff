@@ -62,6 +62,14 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
     screen.blit(bg, (0, 0))
     screen.blit(pipe, wall1_rect.topleft)
     screen.blit(pipe, wall2_rect.topleft)
+    print(flappy)
+    if flappy == flappyd:
+        flappy = pygame.transform.rotate(flappy, 360)
+    elif flappy == flappyu:
+        flappy = pygame.transform.rotate(flappy, 200)
+    else:
+        flappy = pygame.transform.rotate(flappy, 100)
+    
     screen.blit(flappy, player_rect.topleft)
     screen.blit(Base, (0, 382))
 
@@ -128,10 +136,10 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                 wall1 = center(19)
                 wall2 = center(29)
-                score = 0
                 player_center = center(9)
                 flappy = flappym
                 game_active = True
+                score = 0
 
     #change the values of the walls dynamicly
     if game_active:
@@ -170,11 +178,13 @@ while True:
     else:
         screen.blit(Game_Over,(304,70))
         screen.blit(Game_Over2,(200, 200))
-        x = score//10
-        score -= x*10
-        i = score//1
+        score_go = score
+        x = score_go//10
         screen.blit(globals()[f'num{x}'],(364, 25))
+        score_go -= x*10
+        i = score_go//1
         screen.blit(globals()[f'num{i}'],(389, 25))
+        
    
     pygame.display.update()
     
