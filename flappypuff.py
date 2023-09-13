@@ -18,6 +18,7 @@ for file in files:
 # play menu music in an endless loop
 pygame.mixer.music.load(menuMusic)
 pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.2)
 
 #flappy status quo
 flappy = flappyd
