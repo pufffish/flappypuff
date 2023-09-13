@@ -48,6 +48,9 @@ Game_Over = gameover
 Game_Over2 = font.render("Press Enter to Restart", True, "Black")
 score = 0
 
+#start menu stuff
+game_state = "start"
+
 #central function that sets the positions of the elements
 def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int, player_pos: int, points: int, flappy: any):
     global game_active
@@ -126,6 +129,14 @@ while True:
             flappy = pygame.transform.scale(flappy, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             pipe = pygame.transform.scale(pipe, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             pygame.display.update()
+        elif game_state == "start":
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    player_speed = 0
+                    player_speed -= (height/gheight)/5
+                    game_state = "affe"
+                    game_active = True
+            else:
+                game_active = False
         elif game_active:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     player_speed = 0
@@ -138,6 +149,7 @@ while True:
                 flappy = flappym
                 game_active = True
                 score = 0
+            
 
     #change the values of the walls dynamicly
     if game_active:
@@ -173,15 +185,19 @@ while True:
         display_state(wall1, wall2, hole1, hole2, player_center, score, flappy)
 
     #display game over
-    else:
-        screen.blit(Game_Over,(304,70))
-        screen.blit(Game_Over2,(200, 200))
-        score_go = score
-        x = score_go//10
-        screen.blit(globals()[f'num{x}'],(364, 25))
-        score_go -= x*10
-        i = score_go//1
-        screen.blit(globals()[f'num{i}'],(389, 25))
+    if not game_active:
+        if game_state == "start":
+            display_state(wall1, wall2, hole1, hole2, player_center, score, flappy)
+            screen.blit(message, (308, 50))
+        else:
+            screen.blit(Game_Over,(304,70))
+            screen.blit(Game_Over2,(200, 200))
+            score_go = score
+            x = score_go//10
+            screen.blit(globals()[f'num{x}'],(364, 25))
+            score_go -= x*10
+            i = score_go//1
+            screen.blit(globals()[f'num{i}'],(389, 25))
         
    
     pygame.display.update()
