@@ -63,7 +63,6 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
     screen.blit(bg, (0, 0))
     screen.blit(pipe, wall1_rect.topleft)
     screen.blit(pipe, wall2_rect.topleft)
-    print(flappy)
     if flappy == flappyd:
         flappy = pygame.transform.rotate(flappy, -345)
     elif flappy == flappyu:
