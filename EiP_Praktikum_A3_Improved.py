@@ -5,11 +5,21 @@ import random
 import os
 from sys import exit
 
+# initiate mixer
+pygame.mixer.init()
+
 #create vars for the contents of /ressources
+mp3_music = {}
+wav_effects = {}
 dir_ressource = './ressources/'
 files = os.listdir(dir_ressource)
 for file in files:
-    globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
+    if file.endswith(".png"):
+        globals()[str(file).removesuffix('.png')] = pygame.image.load(dir_ressource+file)
+    if file.endswith(".mp3"):
+        mp3_music[file.removesuffix('.mp3')] = dir_ressource + file
+    if file.endswith(".wav"):
+        mp3_music[file.removesuffix('.wav')] = dir_ressource + file
 
 #flappy status quo
 flappy = flappyd
