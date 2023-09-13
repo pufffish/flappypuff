@@ -72,7 +72,7 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
         flappy = pygame.transform.rotate(flappy, -360)
     
     screen.blit(flappy, player_rect.topleft)
-    screen.blit(Base, (0, 382))
+    screen.blit(base, (0, 382))
 
     #check collision if not score up
     if wall1_rect.colliderect(player_rect):
