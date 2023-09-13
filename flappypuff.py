@@ -45,7 +45,7 @@ wall.fill("Black")
 hole = pygame.Surface((width/gwidth, (height/gheight)*3))
 hole.fill("White")
 Game_Over = gameover
-Game_Over2 = font.render("Press Enter to Restart", True, "Red")
+Game_Over2 = font.render("Press Enter to Restart", True, "Black")
 score = 0
 
 #central function that sets the positions of the elements
@@ -63,7 +63,16 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
     screen.blit(bg, (0, 0))
     screen.blit(pipe, wall1_rect.topleft)
     screen.blit(pipe, wall2_rect.topleft)
+    print(flappy)
+    if flappy == flappyd:
+        flappy = pygame.transform.rotate(flappy, 360)
+    elif flappy == flappyu:
+        flappy = pygame.transform.rotate(flappy, 200)
+    else:
+        flappy = pygame.transform.rotate(flappy, 100)
+    
     screen.blit(flappy, player_rect.topleft)
+    screen.blit(Base, (0, 382))
 
     #check collision if not score up
     if wall1_rect.colliderect(player_rect):
@@ -75,20 +84,12 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
             hit.play()
             game_active = False
     else:
-        if score > 9:
-            x = points//10
-            points -= x*10
-            i = points//1
-            score_board = font.render("Score:", True, "Green")
-            screen.blit(score_board,(630, 25))
-            screen.blit(globals()[f'num{x}'],(750, 25))
-            screen.blit(globals()[f'num{i}'],(765, 25))
-        else:
-            i = points//1
-            score_board = font.render("Score:", True, "Green")
-            screen.blit(score_board,(630, 25))
-            screen.blit(globals()[f'num{i}'],(750, 25))
-
+        x = points//10
+        points -= x*10
+        i = points//1
+        screen.blit(globals()[f'num{x}'],(364, 25))
+        screen.blit(globals()[f'num{i}'],(389, 25))
+        
 # function calculate center of screen
 def center(game_y:int):
     screen_y = game_y*(height/gheight)
@@ -136,10 +137,10 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                 wall1 = center(19)
                 wall2 = center(29)
-                score = 0
                 player_center = center(9)
                 flappy = flappym
                 game_active = True
+                score = 0
 
     #change the values of the walls dynamicly
     if game_active:
@@ -176,12 +177,15 @@ while True:
 
     #display game over
     else:
-        screen.fill("Blue")
-        screen.blit(Game_Over,(275,50))
+        screen.blit(Game_Over,(304,70))
         screen.blit(Game_Over2,(200, 200))
-        score_board = font.render(f"Score: {score}", True, "Green")
-        screen.blit(score_board,(630, 25))
+        score_go = score
+        x = score_go//10
+        screen.blit(globals()[f'num{x}'],(364, 25))
+        score_go -= x*10
+        i = score_go//1
+        screen.blit(globals()[f'num{i}'],(389, 25))
+        
    
     pygame.display.update()
-    #reset screen after every frame
-    screen.fill("White")
+    
