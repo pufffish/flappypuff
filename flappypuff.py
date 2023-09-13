@@ -63,6 +63,7 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
     screen.blit(pipe, wall1_rect.topleft)
     screen.blit(pipe, wall2_rect.topleft)
     screen.blit(flappy, player_rect.topleft)
+    screen.blit(Base, (0, 382))
 
     #check collision if not score up
     if wall1_rect.colliderect(player_rect):
@@ -74,14 +75,11 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
             hit.play()
             game_active = False
     else:
-    
         x = points//10
         points -= x*10
         i = points//1
-        score_board = font.render("Score:", True, "Green")
-        screen.blit(score_board,(630, 25))
-        screen.blit(globals()[f'num{x}'],(750, 25))
-        screen.blit(globals()[f'num{i}'],(775, 25))
+        screen.blit(globals()[f'num{x}'],(364, 25))
+        screen.blit(globals()[f'num{i}'],(389, 25))
         
 # function calculate center of screen
 def center(game_y:int):
@@ -170,15 +168,13 @@ while True:
 
     #display game over
     else:
-        screen.blit(Game_Over,(275,50))
+        screen.blit(Game_Over,(304,70))
         screen.blit(Game_Over2,(200, 200))
-        score_board = font.render("Score", True, "Green")
         x = score//10
         score -= x*10
         i = score//1
-        screen.blit(globals()[f'num{x}'],(750, 25))
-        screen.blit(globals()[f'num{i}'],(775, 25))
-        screen.blit(score_board,(630, 25))
+        screen.blit(globals()[f'num{x}'],(364, 25))
+        screen.blit(globals()[f'num{i}'],(389, 25))
    
     pygame.display.update()
     
