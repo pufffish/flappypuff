@@ -123,9 +123,7 @@ while True:
             exit()
         elif  event.type == pygame.VIDEORESIZE:
             bg = pygame.transform.scale(bg, (screen.get_width(), screen.get_height()))
-            flappym = pygame.transform.scale(flappym, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
-            flappyd = pygame.transform.scale(flappyd, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
-            flappyu = pygame.transform.scale(flappyu, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
+            flappy = pygame.transform.scale(flappy, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             pipe = pygame.transform.scale(pipe, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
             pygame.display.update()
         elif game_active:
