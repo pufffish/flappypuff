@@ -89,8 +89,8 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
         x = points//10
         points -= x*10
         i = points//1
-        screen.blit(globals()[f'num{x}'],(364, 25))
-        screen.blit(globals()[f'num{i}'],(389, 25))
+        screen.blit(globals()[f'num{x}'],(364, 20))
+        screen.blit(globals()[f'num{i}'],(389, 20))
         
 # function calculate center of screen
 def center(game_y:int):
@@ -194,10 +194,10 @@ while True:
             screen.blit(Game_Over2,(200, 200))
             score_go = score
             x = score_go//10
-            screen.blit(globals()[f'num{x}'],(364, 25))
+            screen.blit(globals()[f'num{x}'],(364, 20))
             score_go -= x*10
             i = score_go//1
-            screen.blit(globals()[f'num{i}'],(389, 25))
+            screen.blit(globals()[f'num{i}'],(389, 20))
         
    
     pygame.display.update()
