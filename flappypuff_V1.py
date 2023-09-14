@@ -79,12 +79,12 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
     screen.blit(rotated_pipe, wall1_upper_rect.topleft)
     screen.blit(rotated_pipe, wall2_upper_rect.topleft)
     # Create Rect objects for the upper and lower pipes  # Modified Line
-    if flappy == flappyd:
+    '''if flappy == flappyd:
         flappy = pygame.transform.rotate(flappy, -345)
     elif flappy == flappyu:
         flappy = pygame.transform.rotate(flappy, -380)
     else:
-        flappy = pygame.transform.rotate(flappy, -360)
+        flappy = pygame.transform.rotate(flappy, -360)'''
     
     screen.blit(flappy, player_rect.topleft)
     screen.blit(base, (0, 382))
