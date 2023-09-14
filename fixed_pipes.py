@@ -65,10 +65,10 @@ def display_state(wall1_pos: int, wall2_pos:int, hole1_pos: int, hole2_pos: int,
         screen.blit(globals()[f'num{i}'],(750, 25))
     if (wall1_pos - (width/gwidth)/2) <= (width/gwidth):
         if player_pos < (hole1_pos + (height/gheight)/2) or player_pos > (hole1_pos + 3*(height/gheight)):
-            game_active = False
+            game_active = True
     if (wall2_pos - (width/gwidth)/2) <= (width/gwidth):
         if player_pos < (hole2_pos + (height/gheight)/2) or player_pos > (hole2_pos + 3*(height/gheight)):
-            game_active = False
+            game_active = True
     return
 
 #Funktion die Mittelpunkt in Bildschirmkoordinaten berechnet
