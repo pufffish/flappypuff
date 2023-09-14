@@ -17,7 +17,7 @@ for file in files:
 
 # play menu music in an endless loop
 pygame.mixer.music.load(menuMusic)
-pygame.mixer.music.play(-1)
+
 pygame.mixer.music.set_volume(0.2)
 
 #flappy status quo
@@ -132,6 +132,7 @@ speedUp = 0
 
 #game loop
 while True:
+    
     #check any events that can occur if you do smth with the windows or keyboard
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -148,6 +149,7 @@ while True:
                     player_speed -= (height/gheight)/5
                     game_state = "affe"
                     game_active = True
+                    pygame.mixer.music.play(-1)
             else:
                 game_active = False
         elif game_active:
