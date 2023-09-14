@@ -204,6 +204,9 @@ while True:
         if game_state == "start":
             display_state(wall1, wall2, hole1, hole2, player_center, score, flappy)
             screen.blit(message, (308, 50))
+            screen.blit(depression,(750, 0))
+            screen.blit(mrpuffer, (0,0))
+            screen.blit(satirevereinaiwanger,(0,350))
         else:
             screen.blit(Game_Over,(304,70))
             screen.blit(Game_Over2,(200, 200))
