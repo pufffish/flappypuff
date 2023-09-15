@@ -31,7 +31,7 @@ gheight = 10
 
 #start pygame engine and make background white
 pygame.init()
-screen = pygame.display.set_mode((width,height), pygame.RESIZABLE)
+screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("FlappyPuff")
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 50)
@@ -138,11 +138,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        elif  event.type == pygame.VIDEORESIZE:
-            bg = pygame.transform.scale(bg, (screen.get_width(), screen.get_height()))
-            flappy = pygame.transform.scale(flappy, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
-            pipe = pygame.transform.scale(pipe, (34*(screen.get_width()/width), 24*(screen.get_height()/height)))
-            pygame.display.update()
         elif game_state == "start":
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     player_speed = 0
